@@ -24,7 +24,7 @@ data:
     }
 
     resource "solacebroker_msg_vpn" "test" {
-      msg_vpn_name        = "new-3"
+      msg_vpn_name        = "new-5"
       enabled             = true
       max_msg_spool_usage = 10
     }
