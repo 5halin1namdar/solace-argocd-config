@@ -7,7 +7,13 @@ metadata:
     argocd.argoproj.io/sync-options: Replace=true
 spec:
   backoffLimit: 0
+  selector:
+    matchLabels:
+      job-name: solace-terraform-job
   template:
+    metadata:
+      labels:
+        job-name: solace-terraform-job
     spec:
       initContainers:
       - name: copy-terraform-files
