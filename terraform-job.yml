@@ -5,27 +5,13 @@ metadata:
   namespace: default
   annotations:
     argocd.argoproj.io/hook: Sync
-    # argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   backoffLimit: 0
   template:
-    metadata:
-      labels:
     spec:
-      initContainers:
-      - name: copy-terraform-files
-        image: alpine:3.14
-        command: ['sh', '-c']
-        args:
-        - cp /config/* /workspace/
-        volumeMounts:
-        - name: config-volume
-          mountPath: /config
-        - name: workspace-volume
-          mountPath: /workspace
       containers:
       - name: terraform
-        image: hashicorp/terraform:1.1.9
+        image: hashicorp/terraform:latest
         workingDir: /workspace
         command: ["/bin/sh", "-c"]
         args:
@@ -39,12 +25,9 @@ spec:
         - name: workspace-volume
           mountPath: /workspace
         - name: terraform-state
-          mountPath: /workspace/terraform.tfstate.d
+          mountPath: /workspace/state
       restartPolicy: Never
       volumes:
-      - name: config-volume
-        configMap:
-          name: terraform-config
       - name: workspace-volume
         emptyDir: {}
       - name: terraform-state

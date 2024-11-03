@@ -7,7 +7,7 @@ data:
   main.tf: |
     terraform {
       backend "local" {
-        path = "terraform.tfstate"
+        path = "state/terraform.tfstate"
       }
       required_providers {
         solacebroker = {
