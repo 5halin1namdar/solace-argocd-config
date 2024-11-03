@@ -23,11 +23,11 @@ data:
       url      = "http://192.168.0.192:8080"
     }
 
-    # resource "solacebroker_msg_vpn" "test" {
-    #   msg_vpn_name        = "new-3"
-    #   enabled             = true
-    #   max_msg_spool_usage = 10
-    # }
+    resource "solacebroker_msg_vpn" "test" {
+      msg_vpn_name        = "new-3"
+      enabled             = true
+      max_msg_spool_usage = 10
+    }
 
     # resource "solacebroker_msg_vpn_queue" "q" {
     #   msg_vpn_name    = solacebroker_msg_vpn.test.msg_vpn_name
