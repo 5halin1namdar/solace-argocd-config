@@ -1,15 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: solace-terraform-job
+  name: solace-terraform-job-{{timestamp}}
   namespace: default
   annotations:
-    argocd.argoproj.io/sync-options: Replace=true
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   backoffLimit: 0
-  selector:
-    matchLabels:
-      job-name: solace-terraform-job
   template:
     metadata:
       labels:
@@ -20,8 +18,7 @@ spec:
         image: alpine:3.14
         command: ['sh', '-c']
         args:
-        - |
-          cp /config/* /workspace/
+        - cp /config/* /workspace/
         volumeMounts:
         - name: config-volume
           mountPath: /config
@@ -29,7 +26,7 @@ spec:
           mountPath: /workspace
       containers:
       - name: terraform
-        image: hashicorp/terraform:1.1.9
+        image: hashicorp/terraform:latest
         workingDir: /workspace
         command: ["/bin/sh", "-c"]
         args:
