@@ -2,12 +2,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: terraform-config
+  namespace: default
 data:
   main.tf: |
     terraform {
       required_providers {
         solacebroker = {
-          source = "registry.terraform.io/solaceproducts/solacebroker"
+          source  = "SolaceProducts/solacebroker"
+          version = "1.1.0"
         }
       }
     }
@@ -15,7 +17,7 @@ data:
     provider "solacebroker" {
       username = "admin"
       password = "xvPuymxlJ2"
-      url      = "http://localhost:8080"
+      url      = "http://192.168.0.192:8080"
     }
 
     resource "solacebroker_msg_vpn" "test" {

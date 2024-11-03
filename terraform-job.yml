@@ -2,12 +2,26 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: solace-terraform-job
+  namespace: default
 spec:
+  backoffLimit: 0
   template:
     spec:
+      initContainers:
+      - name: copy-terraform-files
+        image: alpine:3.14
+        command: ['sh', '-c']
+        args:
+        - |
+          cp /config/* /workspace/
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+        - name: workspace-volume
+          mountPath: /workspace
       containers:
       - name: terraform
-        image: hashicorp/terraform:1.0.0
+        image: hashicorp/terraform:latest  # Updated to a compatible Terraform version
         workingDir: /workspace
         command: ["/bin/sh", "-c"]
         args:
@@ -15,10 +29,12 @@ spec:
           terraform init
           terraform apply -auto-approve
         volumeMounts:
-        - name: terraform-config
+        - name: workspace-volume
           mountPath: /workspace
       restartPolicy: Never
       volumes:
-      - name: terraform-config
+      - name: config-volume
         configMap:
           name: terraform-config
+      - name: workspace-volume
+        emptyDir: {}
