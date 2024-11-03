@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: terraform-config
+data:
+  main.tf: |
+    terraform {
+      required_providers {
+        solacebroker = {
+          source = "registry.terraform.io/solaceproducts/solacebroker"
+        }
+      }
+    }
+
+    provider "solacebroker" {
+      username = "admin"
+      password = "xvPuymxlJ2"
+      url      = "http://localhost:8080"
+    }
+
+    resource "solacebroker_msg_vpn" "test" {
+      msg_vpn_name        = "new"
+      enabled             = true
+      max_msg_spool_usage = 10
+    }
+
+    resource "solacebroker_msg_vpn_queue" "q" {
+      msg_vpn_name    = solacebroker_msg_vpn.test.msg_vpn_name
+      queue_name      = "green"
+      ingress_enabled = true
+      egress_enabled  = true
+    }
