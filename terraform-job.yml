@@ -5,7 +5,7 @@ metadata:
   namespace: default
   annotations:
     argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    # argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   backoffLimit: 0
   template:
@@ -30,8 +30,11 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
         - |
+          set -e
           terraform init
-          terraform apply -auto-approve
+          terraform plan -out=tfplan
+          terraform show -no-color tfplan
+          terraform apply -auto-approve tfplan
         volumeMounts:
         - name: workspace-volume
           mountPath: /workspace
