@@ -6,6 +6,9 @@ metadata:
 data:
   main.tf: |
     terraform {
+      backend "local" {
+        path = "terraform.tfstate"
+      }
       required_providers {
         solacebroker = {
           source  = "SolaceProducts/solacebroker"

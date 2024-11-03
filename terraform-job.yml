@@ -3,25 +3,15 @@ kind: Job
 metadata:
   name: solace-terraform-job
   namespace: default
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
 spec:
   backoffLimit: 0
   template:
     spec:
-      initContainers:
-      - name: copy-terraform-files
-        image: alpine:3.14
-        command: ['sh', '-c']
-        args:
-        - |
-          cp /config/* /workspace/
-        volumeMounts:
-        - name: config-volume
-          mountPath: /config
-        - name: workspace-volume
-          mountPath: /workspace
       containers:
       - name: terraform
-        image: hashicorp/terraform:latest  # Updated to a compatible Terraform version
+        image: hashicorp/terraform:latest
         workingDir: /workspace
         command: ["/bin/sh", "-c"]
         args:
@@ -29,12 +19,16 @@ spec:
           terraform init
           terraform apply -auto-approve
         volumeMounts:
-        - name: workspace-volume
+        - name: terraform-config
           mountPath: /workspace
+          readOnly: true
+        - name: terraform-state
+          mountPath: /workspace/terraform.tfstate.d
       restartPolicy: Never
       volumes:
-      - name: config-volume
+      - name: terraform-config
         configMap:
           name: terraform-config
-      - name: workspace-volume
-        emptyDir: {}
+      - name: terraform-state
+        persistentVolumeClaim:
+          claimName: terraform-state-pvc
