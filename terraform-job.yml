@@ -9,9 +9,21 @@ spec:
   backoffLimit: 0
   template:
     spec:
+      initContainers:
+      - name: copy-terraform-files
+        image: alpine:3.14
+        command: ['sh', '-c']
+        args:
+        - |
+          cp /config/* /workspace/
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+        - name: workspace-volume
+          mountPath: /workspace
       containers:
       - name: terraform
-        image: hashicorp/terraform:latest
+        image: hashicorp/terraform:1.1.9
         workingDir: /workspace
         command: ["/bin/sh", "-c"]
         args:
@@ -19,16 +31,17 @@ spec:
           terraform init
           terraform apply -auto-approve
         volumeMounts:
-        - name: terraform-config
+        - name: workspace-volume
           mountPath: /workspace
-          readOnly: true
         - name: terraform-state
           mountPath: /workspace/terraform.tfstate.d
       restartPolicy: Never
       volumes:
-      - name: terraform-config
+      - name: config-volume
         configMap:
           name: terraform-config
+      - name: workspace-volume
+        emptyDir: {}
       - name: terraform-state
         persistentVolumeClaim:
           claimName: terraform-state-pvc
