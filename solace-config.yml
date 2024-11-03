@@ -23,45 +23,45 @@ data:
       url      = "http://192.168.0.192:8080"
     }
 
-    resource "solacebroker_msg_vpn" "test" {
-      msg_vpn_name        = "new-3"
-      enabled             = true
-      max_msg_spool_usage = 10
-    }
+    # resource "solacebroker_msg_vpn" "test" {
+    #   msg_vpn_name        = "new-3"
+    #   enabled             = true
+    #   max_msg_spool_usage = 10
+    # }
 
-    resource "solacebroker_msg_vpn_queue" "q" {
-      msg_vpn_name    = solacebroker_msg_vpn.test.msg_vpn_name
-      queue_name      = "green"
-      ingress_enabled = true
-      egress_enabled  = true
-    }
+    # resource "solacebroker_msg_vpn_queue" "q" {
+    #   msg_vpn_name    = solacebroker_msg_vpn.test.msg_vpn_name
+    #   queue_name      = "green"
+    #   ingress_enabled = true
+    #   egress_enabled  = true
+    # }
 
-    # New VPN
-    resource "solacebroker_msg_vpn" "new_vpn" {
-      msg_vpn_name        = "my-new-vpn"
-      enabled             = true
-      max_msg_spool_usage = 20
-    }
+    # # New VPN
+    # resource "solacebroker_msg_vpn" "new_vpn" {
+    #   msg_vpn_name        = "my-new-vpn"
+    #   enabled             = true
+    #   max_msg_spool_usage = 20
+    # }
 
-    # New Queue
-    resource "solacebroker_msg_vpn_queue" "new_queue" {
-      msg_vpn_name    = solacebroker_msg_vpn.new_vpn.msg_vpn_name
-      queue_name      = "my-new-queue"
-      ingress_enabled = true
-      egress_enabled  = true
-    }
+    # # New Queue
+    # resource "solacebroker_msg_vpn_queue" "new_queue" {
+    #   msg_vpn_name    = solacebroker_msg_vpn.new_vpn.msg_vpn_name
+    #   queue_name      = "my-new-queue"
+    #   ingress_enabled = true
+    #   egress_enabled  = true
+    # }
 
-    # New VPN
-    resource "solacebroker_msg_vpn" "new_vpn_1" {
-      msg_vpn_name        = "my-new-vpn-1"
-      enabled             = true
-      max_msg_spool_usage = 20
-    }
+    # # New VPN
+    # resource "solacebroker_msg_vpn" "new_vpn_1" {
+    #   msg_vpn_name        = "my-new-vpn-1"
+    #   enabled             = true
+    #   max_msg_spool_usage = 20
+    # }
 
-    # New Queue
-    resource "solacebroker_msg_vpn_queue" "new_queue_1" {
-      msg_vpn_name    = solacebroker_msg_vpn.new_vpn_1.msg_vpn_name
-      queue_name      = "my-new-queue"
-      ingress_enabled = true
-      egress_enabled  = true
-    }
+    # # New Queue
+    # resource "solacebroker_msg_vpn_queue" "new_queue_1" {
+    #   msg_vpn_name    = solacebroker_msg_vpn.new_vpn_1.msg_vpn_name
+    #   queue_name      = "my-new-queue"
+    #   ingress_enabled = true
+    #   egress_enabled  = true
+    # }
