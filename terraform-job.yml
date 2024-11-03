@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: solace-terraform-job-{{timestamp}}
+  generateName: solace-terraform-job-
   namespace: default
   annotations:
     argocd.argoproj.io/hook: Sync
@@ -26,7 +26,7 @@ spec:
           mountPath: /workspace
       containers:
       - name: terraform
-        image: hashicorp/terraform:latest
+        image: hashicorp/terraform:1.1.9
         workingDir: /workspace
         command: ["/bin/sh", "-c"]
         args:
