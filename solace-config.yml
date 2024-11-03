@@ -50,3 +50,18 @@ data:
       ingress_enabled = true
       egress_enabled  = true
     }
+
+    # New VPN
+    resource "solacebroker_msg_vpn" "new_vpn_1" {
+      msg_vpn_name        = "my-new-vpn-1"
+      enabled             = true
+      max_msg_spool_usage = 20
+    }
+
+    # New Queue
+    resource "solacebroker_msg_vpn_queue" "new_queue" {
+      msg_vpn_name    = solacebroker_msg_vpn.new_vpn_1.msg_vpn_name
+      queue_name      = "my-new-queue"
+      ingress_enabled = true
+      egress_enabled  = true
+    }
